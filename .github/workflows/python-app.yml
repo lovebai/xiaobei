@@ -35,4 +35,4 @@ jobs:
           E_ACCOUNT: ${{secrets.E_ACCOUNT}}
           E_PASS: ${{secrets.E_PASS}}
         run: |
-          python3.9 ./main.py
+          python3.9 main.py
