@@ -8,20 +8,20 @@ from email.mime.text import MIMEText
 from email.header import Header
 
 # 小北学生 账号密码
-USERNAME = os.getenv("username")
-PASSWORD = os.getenv("password")
+USERNAME = os.getenv("XB_USERNAME")
+PASSWORD = os.getenv("XB_PASSWORD")
 # 经纬度
-LOCATION = os.getenv("location")
+LOCATION = os.getenv("XB_LOCATION")
 # 位置
-COORD = os.getenv("coord")
+COORD = os.getenv("XB_COORD")
 # 邮件开关
-IS_EMAIL = os.getenv("is_email")
+IS_EMAIL = os.getenv("XB_IS_EMAIL")
 # 接收消息邮箱账号
-EMAIL = os.getenv("email")
-# 发送邮箱配置 端口默认使用465 ssl
-E_HOST = os.getenv("host")
-E_ACCOUNT = os.getenv("account")
-E_PASS = os.getenv("pass")
+EMAIL = os.getenv("XB_EMAIL")
+# 发送邮箱配置
+E_HOST = os.getenv("XB_E_HOST")
+E_ACCOUNT = os.getenv("XB_E_ACCOUNT")
+E_PASS = os.getenv("XB_E_PASS")
 # 基本链接
 BASE_URL = "https://xiaobei.yinghuaonline.com/prod-api/"
 # header
