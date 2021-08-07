@@ -31,8 +31,5 @@ jobs:
           XB_COORD: ${{secrets.XB_COORD}}
           XB_IS_EMAIL: ${{secrets.XB_IS_EMAIL}}
           XB_EMAIL: ${{secrets.XB_EMAIL}}
-          XB_E_HOST: ${{secrets.XB_E_HOST}}
-          XB_E_ACCOUNT: ${{secrets.XB_E_ACCOUNT}}
-          XB_E_PASS: ${{secrets.XB_E_PASS}}
         run: |
           python3.9 main.py
