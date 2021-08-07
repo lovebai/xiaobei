@@ -7,21 +7,27 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
+
 # 小北学生 账号密码
-USERNAME = os.getenv("username")
-PASSWORD = os.getenv("password")
+USERNAME = ''
+PASSWORD = ''
 # 经纬度
-LOCATION = os.getenv("location")
+LOCATION = ''
 # 位置
-COORD = os.getenv("coord")
+COORD = ''
 # 邮件开关
-IS_EMAIL = os.getenv("is_email")
+IS_EMAIL = ''
 # 接收消息邮箱账号
-EMAIL = os.getenv("email")
-# 发送邮箱配置 端口默认使用465 ssl
-E_HOST = os.getenv("host")
-E_ACCOUNT = os.getenv("account")
-E_PASS = os.getenv("pass")
+EMAIL = ''
+# 发送邮箱配置
+E_HOST = ''
+E_ACCOUNT = ''
+E_PASS = ''
+
+
+# 配置文件
+CONF = 'config.conf'
+
 # 基本链接
 BASE_URL = "https://xiaobei.yinghuaonline.com/prod-api/"
 # header
@@ -60,8 +66,8 @@ def is_email():
         return {'email': email, 'host': host, 'send_mail': from_mail, 'password': password}
 
 
-# 判断环境变量里是否为空
-if USERNAME is None or PASSWORD is None:
+path = os.getcwd() + '\\' + CONF
+if not os.path.exists(path):
     USERNAME = str(input("请输入小北学生账号："))
     PASSWORD = str(input("请输入小北学生密码："))
     is_open()
@@ -77,8 +83,42 @@ if USERNAME is None or PASSWORD is None:
         E_ACCOUNT = str(rep['send_mail'])
         E_PASS = str(rep['password'])
     PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
+    conf = {
+        'user': USERNAME,
+        'pass': PASSWORD,
+        'location': LOCATION,
+        'coord': COORD,
+        'is_mail': IS_EMAIL,
+        'to': EMAIL,
+        'host': E_HOST,
+        'from': E_ACCOUNT,
+        'pwd': E_PASS
+    }
+    try:
+        fp = open(path, 'w+')
+        fp.write(json.dumps(conf))
+    except IOError:
+        print("IO Error")
+    else:
+        fp.close()
+
 else:
-    PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
+    try:
+        con = open(path, 'r')
+        data = json.loads(con.read())
+    except IOError:
+        print("IO Error")
+    else:
+        USERNAME = data['user']
+        PASSWORD = data['pass']
+        LOCATION = data['location']
+        COORD = data['coord']
+        IS_EMAIL = data['is_mail']
+        EMAIL = data['to']
+        E_HOST = data['host']
+        E_ACCOUNT = data['from']
+        E_PASS = data['pwd']
+        con.close()
 
 
 def get_param():
