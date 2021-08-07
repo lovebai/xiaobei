@@ -116,7 +116,7 @@ def send_mail(context):
     message['Subject'] = Header(subject, 'utf-8')
     try:
         smtpObj = smtplib.SMTP()
-        smtpObj.connect(E_HOST, 25)
+        smtpObj.connect(E_HOST, 465)
         smtpObj.login(E_ACCOUNT, E_PASS)
         smtpObj.sendmail(sender, receivers, message.as_string())
         print("Succeed!")
