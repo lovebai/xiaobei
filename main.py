@@ -62,7 +62,21 @@ def is_email():
 
 # 判断环境变量里是否为空
 if USERNAME is None or PASSWORD is None:
-    pass
+    USERNAME = str(input("请输入小北学生账号："))
+    PASSWORD = str(input("请输入小北学生密码："))
+    is_open()
+    LOCATION = str(input("请将您所复制的经纬度粘贴到此处："))
+    COORD = str(input("请将您所在的区域【如：中国-云南省-昆明市-官渡区】："))
+    rep = is_email()
+    if len(rep) == 0:
+        IS_EMAIL = 0
+    else:
+        IS_EMAIL = 1
+        EMAIL = str(rep['email'])
+        E_HOST = str(rep['host'])
+        E_ACCOUNT = str(rep['send_mail'])
+        E_PASS = str(rep['password'])
+    PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
 else:
     PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
 
