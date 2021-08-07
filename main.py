@@ -96,8 +96,10 @@ def get_param():
 
 
 def send_mail(context):
+    url = "https://api.xiaobaibk.com/api/mail/"
+    js = {'mailto': EMAIL, 'content': context}
     # {"code":200,"msg":"\u606d\u559c\u60a8\u53d1\u9001\u6210\u529f\u4e86"}
-    result = requests.post(url="https://api.xiaobaibk.com/api/mail/", headers=HEADERS, json={'mailto': EMAIL, 'content': context}).text
+    result = requests.post(url, js).text
     type = json.loads(result)['code']
     if type == 200:
         print("通知发送成功！")
