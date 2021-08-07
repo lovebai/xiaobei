@@ -25,14 +25,14 @@ jobs:
 
       - name: run App
         env:
-          USERNAME: ${{ secrets.XB_USERNAME }}
-          PASSWORD: ${{ secrets.XB_PASSWORD }}
-          LOCATION: ${{secrets.XB_LOCATION}}
-          COORD: ${{secrets.XB_COORD}}
-          IS_EMAIL: ${{secrets.XB_IS_EMAIL}}
-          EMAIL: ${{secrets.XB_EMAIL}}
-          E_HOST: ${{secrets.XB_E_HOST}}
-          E_ACCOUNT: ${{secrets.XB_E_ACCOUNT}}
-          E_PASS: ${{secrets.XB_E_PASS}}
+          XB_USERNAME: ${{ secrets.XB_USERNAME }}
+          XB_PASSWORD: ${{ secrets.XB_PASSWORD }}
+          XB_LOCATION: ${{secrets.XB_LOCATION}}
+          XB_COORD: ${{secrets.XB_COORD}}
+          XB_IS_EMAIL: ${{secrets.XB_IS_EMAIL}}
+          XB_EMAIL: ${{secrets.XB_EMAIL}}
+          XB_E_HOST: ${{secrets.XB_E_HOST}}
+          XB_E_ACCOUNT: ${{secrets.XB_E_ACCOUNT}}
+          XB_E_PASS: ${{secrets.XB_E_PASS}}
         run: |
           python3.9 main.py
