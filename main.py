@@ -158,7 +158,7 @@ if __name__ == '__main__':
         if status == 200:
             print("恭喜您打卡成功了！")
             if IS_EMAIL == 'yes':
-                send_mail("更新您今天打卡成功啦^_^")
+                send_mail("恭喜您今天打卡成功啦^_^")
         else:
             print("Error：" + json.loads(respond)['msg'])
             if IS_EMAIL == 'yes':
