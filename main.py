@@ -3,9 +3,7 @@ import json
 import os
 import random
 import requests
-import smtplib
-from email.mime.text import MIMEText
-from email.header import Header
+
 
 # 小北学生 账号密码
 USERNAME = os.getenv("XB_USERNAME")
@@ -16,12 +14,9 @@ LOCATION = os.getenv("XB_LOCATION")
 COORD = os.getenv("XB_COORD")
 # 邮件开关
 IS_EMAIL = os.getenv("XB_IS_EMAIL")
-# 接收消息邮箱账号
+# 邮箱账号
 EMAIL = os.getenv("XB_EMAIL")
-# 发送邮箱配置
-E_HOST = os.getenv("XB_E_HOST")
-E_ACCOUNT = os.getenv("XB_E_ACCOUNT")
-E_PASS = os.getenv("XB_E_PASS")
+
 # 基本链接
 BASE_URL = "https://xiaobei.yinghuaonline.com/prod-api/"
 # header
@@ -54,10 +49,7 @@ def is_email():
         return {}
     else:
         email = str(input("请输入要接收消息的邮箱账号："))
-        host = str(input("请输入SMTP服务器地址："))
-        from_mail = str(input("请输入发送通知邮箱账号："))
-        password = str(input("请输入发送通知邮箱账号的密码："))
-        return {'email': email, 'host': host, 'send_mail': from_mail, 'password': password}
+        return {'email': email}
 
 
 # 判断环境变量里是否为空
@@ -69,13 +61,10 @@ if USERNAME is None or PASSWORD is None:
     COORD = str(input("请将您所在的区域【如：中国-云南省-昆明市-官渡区】："))
     rep = is_email()
     if len(rep) == 0:
-        IS_EMAIL = 0
+        IS_EMAIL = 'no'
     else:
-        IS_EMAIL = 1
+        IS_EMAIL = 'yes'
         EMAIL = str(rep['email'])
-        E_HOST = str(rep['host'])
-        E_ACCOUNT = str(rep['send_mail'])
-        E_PASS = str(rep['password'])
     PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
 else:
     PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
@@ -107,21 +96,13 @@ def get_param():
 
 
 def send_mail(context):
-    sender = E_ACCOUNT
-    receivers = [EMAIL]
-    message = MIMEText(context, 'plain', 'utf-8')
-    message['From'] = Header("小白", 'utf-8')
-    message['To'] = Header("白嫖怪", 'utf-8')
-    subject = '每日打卡状态提醒'
-    message['Subject'] = Header(subject, 'utf-8')
-    try:
-        smtpObj = smtplib.SMTP()
-        smtpObj.connect(E_HOST, 25)
-        smtpObj.login(E_ACCOUNT, E_PASS)
-        smtpObj.sendmail(sender, receivers, message.as_string())
-        print("Succeed!")
-    except smtplib.SMTPException:
-        print("Error!")
+    # {"code":200,"msg":"\u606d\u559c\u60a8\u53d1\u9001\u6210\u529f\u4e86"}
+    result = requests.post(url="https://api.xiaobaibk.com/api/mail/", headers=HEADERS, json={'mailto': EMAIL, 'content': context}).text
+    type = json.loads(result)['code']
+    if type == 200:
+        print("通知发送成功！")
+    else:
+        print("通知发送失败!")
 
 
 if __name__ == '__main__':
@@ -157,7 +138,7 @@ if __name__ == '__main__':
     if code != 200:
         print("Sorry! Login failed! Error：" + msg)
         # 发送邮件
-        if IS_EMAIL == 1:
+        if IS_EMAIL == 'yes':
             send_mail("登录失败，失败原因：" + msg)
     else:
         print("登录成功！")
@@ -174,9 +155,9 @@ if __name__ == '__main__':
         status = json.loads(respond)['code']
         if status == 200:
             print("恭喜您打卡成功了！")
-            if IS_EMAIL == 1:
+            if IS_EMAIL == 'yes':
                 send_mail("更新您今天打卡成功啦^_^")
         else:
             print("Error：" + json.loads(respond)['msg'])
-            if IS_EMAIL == 1:
+            if IS_EMAIL == 'yes':
                 send_mail("抱歉打卡失败了，原因未知，请自信手动打卡，谢谢>_<")
