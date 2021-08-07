@@ -8,20 +8,29 @@ from email.mime.text import MIMEText
 from email.header import Header
 
 # 小北学生 账号密码
-USERNAME = os.getenv("XB_USERNAME")
-PASSWORD = os.getenv("XB_PASSWORD")
+# USERNAME = os.getenv("XB_USERNAME")
+USERNAME = os.environ.get("XB_USERNAME")
+# PASSWORD = os.getenv("XB_PASSWORD")
+PASSWORD = os.environ.get("XB_PASSWORD")
 # 经纬度
-LOCATION = os.getenv("XB_LOCATION")
+# LOCATION = os.getenv("XB_LOCATION")
+LOCATION = os.environ.get("XB_LOCATION")
 # 位置
-COORD = os.getenv("XB_COORD")
+# COORD = os.getenv("XB_COORD")
+COORD = os.environ.get("XB_COORD")
 # 邮件开关
-IS_EMAIL = os.getenv("XB_IS_EMAIL")
+# IS_EMAIL = os.getenv("XB_IS_EMAIL")
+IS_EMAIL = os.environ.get("XB_IS_EMAIL")
 # 接收消息邮箱账号
-EMAIL = os.getenv("XB_EMAIL")
+# EMAIL = os.getenv("XB_EMAIL")
+EMAIL = os.environ.get("XB_EMAIL")
 # 发送邮箱配置
-E_HOST = os.getenv("XB_E_HOST")
-E_ACCOUNT = os.getenv("XB_E_ACCOUNT")
-E_PASS = os.getenv("XB_E_PASS")
+# E_HOST = os.getenv("XB_E_HOST")
+E_HOST = os.environ.get("XB_E_HOST")
+# E_ACCOUNT = os.getenv("XB_E_ACCOUNT")
+E_ACCOUNT = os.environ.get("XB_E_ACCOUNT")
+# E_PASS = os.getenv("XB_E_PASS")
+E_PASS = os.environ.get("XB_E_PASS")
 # 基本链接
 BASE_URL = "https://xiaobei.yinghuaonline.com/prod-api/"
 # header
