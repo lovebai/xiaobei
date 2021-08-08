@@ -4,7 +4,6 @@ import os
 import random
 import requests
 
-
 # 小北学生 账号密码
 USERNAME = os.getenv("XB_USERNAME")
 PASSWORD = os.getenv("XB_PASSWORD")
@@ -150,6 +149,10 @@ if __name__ == '__main__':
         HEADERS['authorization'] = json.loads(res)['token']
 
         health_param = get_param()
+        if LOCATION is not None and COORD is not None:
+            health_param = get_param()
+        else:
+            print("必要参数为空！")
 
         respond = requests.post(url=health, headers=HEADERS, json=health_param).text
         # error return {'msg': None, 'code': 500}
