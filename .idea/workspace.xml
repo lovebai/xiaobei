@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f32bb52-5d9b-42aa-8f35-a52257f8efb9" name="Changes" comment="modified" />
+    <list default="true" id="3f32bb52-5d9b-42aa-8f35-a52257f8efb9" name="Changes" comment="modified">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -142,7 +145,9 @@
       <updated>1628248276862</updated>
       <workItem from="1628248278238" duration="19036000" />
       <workItem from="1628294840694" duration="5161000" />
-      <workItem from="1628312609001" duration="14087000" />
+      <workItem from="1628312609001" duration="13398000" />
+      <workItem from="1628398329683" duration="55000" />
+      <workItem from="1628399991600" duration="2412000" />
     </task>
     <task id="LOCAL-00001" summary="修改">
       <created>1628328749297</created>
@@ -151,14 +156,7 @@
       <option name="project" value="LOCAL" />
       <updated>1628328749297</updated>
     </task>
-    <task id="LOCAL-00002" summary="modified">
-      <created>1628328809988</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1628328809988</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,8 +176,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="修改" />
-    <MESSAGE value="modified" />
-    <option name="LAST_COMMIT_MESSAGE" value="modified" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Xiaobei$test.coverage" NAME="test Coverage Results" MODIFIED="1628318054952" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

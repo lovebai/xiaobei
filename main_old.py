@@ -3,6 +3,9 @@ import json
 import os
 import random
 import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
 
 
 # 小北学生 账号密码
@@ -16,6 +19,11 @@ COORD = ''
 IS_EMAIL = ''
 # 接收消息邮箱账号
 EMAIL = ''
+# 发送邮箱配置
+E_HOST = ''
+E_ACCOUNT = ''
+E_PASS = ''
+
 
 # 配置文件
 CONF = 'config.conf'
@@ -52,7 +60,10 @@ def is_email():
         return {}
     else:
         email = str(input("请输入要接收消息的邮箱账号："))
-        return {'email': email}
+        host = str(input("请输入SMTP服务器地址："))
+        from_mail = str(input("请输入发送通知邮箱账号："))
+        password = str(input("请输入发送通知邮箱账号的密码："))
+        return {'email': email, 'host': host, 'send_mail': from_mail, 'password': password}
 
 
 path = os.getcwd() + '\\' + CONF
@@ -78,7 +89,10 @@ if not os.path.exists(path):
         'location': LOCATION,
         'coord': COORD,
         'is_mail': IS_EMAIL,
-        'to': EMAIL
+        'to': EMAIL,
+        'host': E_HOST,
+        'from': E_ACCOUNT,
+        'pwd': E_PASS
     }
     try:
         fp = open(path, 'w+')
@@ -101,6 +115,9 @@ else:
         COORD = data['coord']
         IS_EMAIL = data['is_mail']
         EMAIL = data['to']
+        E_HOST = data['host']
+        E_ACCOUNT = data['from']
+        E_PASS = data['pwd']
         con.close()
 
 
@@ -130,15 +147,21 @@ def get_param():
 
 
 def send_mail(context):
-    url = "https://api.xiaobaibk.com/api/mail/"
-    js = {'mailto': EMAIL, 'content': context}
-    # {"code":200,"msg":"\u606d\u559c\u60a8\u53d1\u9001\u6210\u529f\u4e86"}
-    result = requests.post(url, js).text
-    type = json.loads(result)['code']
-    if type == 200:
-        print("通知发送成功！")
-    else:
-        print("通知发送失败!")
+    sender = E_ACCOUNT
+    receivers = [EMAIL]
+    message = MIMEText(context, 'plain', 'utf-8')
+    message['From'] = Header("小白", 'utf-8')
+    message['To'] = Header("白嫖怪", 'utf-8')
+    subject = '每日打卡状态提醒'
+    message['Subject'] = Header(subject, 'utf-8')
+    try:
+        smtpObj = smtplib.SMTP()
+        smtpObj.connect(E_HOST, 25)
+        smtpObj.login(E_ACCOUNT, E_PASS)
+        smtpObj.sendmail(sender, receivers, message.as_string())
+        print("Succeed!")
+    except smtplib.SMTPException:
+        print("Error!")
 
 
 if __name__ == '__main__':
@@ -183,11 +206,7 @@ if __name__ == '__main__':
         # 换个方法
         HEADERS['authorization'] = json.loads(res)['token']
 
-        health_param = None
-        if LOCATION is not None and COORD is not None:
-            health_param = get_param()
-        else:
-            print("必要参数为空！")
+        health_param = get_param()
 
         respond = requests.post(url=health, headers=HEADERS, json=health_param).text
         # error return {'msg': None, 'code': 500}
@@ -196,7 +215,7 @@ if __name__ == '__main__':
         if status == 200:
             print("恭喜您打卡成功了！")
             if IS_EMAIL == 1:
-                send_mail("恭喜您今天打卡成功啦^_^")
+                send_mail("更新您今天打卡成功啦^_^")
         else:
             print("Error：" + json.loads(respond)['msg'])
             if IS_EMAIL == 1:
