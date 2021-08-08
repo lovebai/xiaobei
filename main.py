@@ -103,7 +103,7 @@ def send_mail(context):
     if type == 200:
         print("通知发送成功！")
     else:
-        print("通知发送失败!")
+        print("通知发送失败，原因："+json.loads(result)['msg'])
 
 
 if __name__ == '__main__':
