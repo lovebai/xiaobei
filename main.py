@@ -148,7 +148,7 @@ if __name__ == '__main__':
         # 换个方法
         HEADERS['authorization'] = json.loads(res)['token']
 
-        health_param = get_param()
+        health_param = None
         if LOCATION is not None and COORD is not None:
             health_param = get_param()
         else:
