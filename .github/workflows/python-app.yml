@@ -39,11 +39,17 @@ jobs:
       - name: run main.py
         # 环境变量
         env:
+          # 必填
           XB_USERNAME: ${{ secrets.XB_USERNAME }}
+          # 必填
           XB_PASSWORD: ${{ secrets.XB_PASSWORD }}
+          # 必填
           XB_LOCATION: ${{secrets.XB_LOCATION}}
+          # 选填
           XB_COORD: ${{secrets.XB_COORD}}
-          XB_IS_EMAIL: ${{secrets.XB_IS_EMAIL}}
+          # 选填 填则通知，不填则不通知
+          XB_WXAPP: ${{secrets.XB_WXAPP}}
+          # 选填 填则通知，不填则不通知
           XB_EMAIL: ${{secrets.XB_EMAIL}}
         run: |
           python3.9 main.py
