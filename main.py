@@ -3,18 +3,21 @@ import json
 import os
 import random
 import requests
+import time
 
 # 小北学生 账号密码
 USERNAME = os.getenv("XB_USERNAME")
 PASSWORD = os.getenv("XB_PASSWORD")
 # 经纬度
 LOCATION = os.getenv("XB_LOCATION")
-# 位置
+# 位置，可选通过接口获取
 COORD = os.getenv("XB_COORD")
 # 邮件开关
-IS_EMAIL = os.getenv("XB_IS_EMAIL")
+# IS_EMAIL = os.getenv("XB_IS_EMAIL") #不要开关直接干掉
 # 邮箱账号
 EMAIL = os.getenv("XB_EMAIL")
+# 企业微信应用
+WX_APP = os.getenv("XB_WXAPP")
 
 # 基本链接
 BASE_URL = "https://xiaobei.yinghuaonline.com/prod-api/"
@@ -41,32 +44,35 @@ def is_open():
         print("请在浏览器里打开链接获取经纬度：https://api.xiaobaibk.com/api/map/")
 
 
-def is_email():
-    print("开启邮件通知后可以收到打卡成功和失败通知，如果要开启的话是需要配置的，选择权在你^_^")
-    reply = input("是否需要开启邮件通知[Y/N]:")
-    if reply == 'N' or reply != "Y":
-        return {}
-    else:
-        email = str(input("请输入要接收消息的邮箱账号："))
-        return {'email': email}
-
-
 # 判断环境变量里是否为空
 if USERNAME is None or PASSWORD is None:
     USERNAME = str(input("请输入小北学生账号："))
     PASSWORD = str(input("请输入小北学生密码："))
     is_open()
     LOCATION = str(input("请将您所复制的经纬度粘贴到此处："))
-    COORD = str(input("请将您所在的区域【如：中国-云南省-昆明市-官渡区】："))
-    rep = is_email()
-    if len(rep) == 0:
-        IS_EMAIL = 'no'
-    else:
-        IS_EMAIL = 'yes'
-        EMAIL = str(rep['email'])
+    # COORD = str(input("请将您所在的区域【如：中国-云南省-昆明市-官渡区】："))
+    EMAIL = input("接收邮箱账号,留空则不开启:")
+    print("微信通知,开启需填写KEY，教程：http://note.youdao.com/s/HMiudGkb")
+    WX_APP = input("微信通知密钥,留空则不开启:")
     PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
 else:
     PASSWORD = str(base64.b64encode(PASSWORD.encode()).decode())
+
+
+def get_location():
+    lc = LOCATION.split(',')
+    location = lc[1] + ',' + lc[0]
+    url = "https://api.xiaobaibk.com/api/location/?location=" + location
+    result = requests.get(url).text
+    data = json.loads(result)
+    if data['status'] == 0:
+        province = data['result']['addressComponent']['province']
+        city = data['result']['addressComponent']['city']
+        district = data['result']['addressComponent']['district']
+        return '中国-' + province + '-' + city + '-' + district
+    else:
+        print("位置获取失败,程序终止")
+        os._exit(0)
 
 
 def get_param():
@@ -103,7 +109,54 @@ def send_mail(context):
     if type == 200:
         print("通知发送成功！")
     else:
-        print("通知发送失败，原因："+json.loads(result)['msg'])
+        print("通知发送失败，原因：" + json.loads(result)['msg'])
+
+
+def wxapp_notify(content):
+    app_params = WX_APP.split(',')
+    url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken'
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    payload = {
+        'corpid': app_params[0],
+        'corpsecret': app_params[1],
+    }
+    response = requests.post(url=url, headers=headers, data=json.dumps(payload), timeout=15).json()
+    accesstoken = response["access_token"]
+    html = content + "<br/>打卡时间：" + time.strftime("%Y-%m-%d  %H:%M:%S")
+    options = {
+        'msgtype': 'mpnews',
+        'mpnews': {
+            'articles': [
+                {
+                    'title': '小北打卡通知',
+                    'thumb_media_id': f'{app_params[4]}',
+                    'author': '小白',
+                    'content_source_url': '',
+                    'content': f'{html}',
+                    'digest': f'{content}'
+                }
+            ]
+        }
+    }
+
+    url = f"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={accesstoken}"
+    data = {
+        'touser': f'{app_params[2]}',
+        'agentid': f'{app_params[3]}',
+        'safe': '0'
+    }
+    data.update(options)
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    response = requests.post(url=url, headers=headers, data=json.dumps(data)).json()
+
+    if response['errcode'] == 0:
+        print('企业微信应用通知成功！')
+    else:
+        print('企业微信应用通知失败！')
 
 
 if __name__ == '__main__':
@@ -136,11 +189,14 @@ if __name__ == '__main__':
     code = json.loads(res)['code']
     msg = json.loads(res)['msg']
 
+
     if code != 200:
         print("Sorry! Login failed! Error：" + msg)
         # 发送邮件
-        if IS_EMAIL == 'yes':
+        if EMAIL != '':
             send_mail("登录失败，失败原因：" + msg)
+        if WX_APP != '':
+            wxapp_notify("登录失败，失败原因：" + msg)
     else:
         print("登录成功！")
 
@@ -148,7 +204,14 @@ if __name__ == '__main__':
         # 换个方法
         HEADERS['authorization'] = json.loads(res)['token']
 
+        # 获取位置
+        if COORD is None:
+            COORD = get_location()
+        else:
+            pass
+
         health_param = None
+
         if LOCATION is not None and COORD is not None:
             health_param = get_param()
         else:
@@ -160,9 +223,13 @@ if __name__ == '__main__':
         status = json.loads(respond)['code']
         if status == 200:
             print("恭喜您打卡成功了！")
-            if IS_EMAIL == 'yes':
+            if EMAIL != '':
                 send_mail("恭喜您今天打卡成功啦^_^")
+            if WX_APP != '':
+                wxapp_notify("恭喜您今天打卡成功啦^_^")
         else:
             print("Error：" + json.loads(respond)['msg'])
-            if IS_EMAIL == 'yes':
+            if EMAIL != 'yes':
                 send_mail("抱歉打卡失败了，原因未知，请自信手动打卡，谢谢>_<")
+            if WX_APP != '':
+                wxapp_notify("抱歉打卡失败了，原因未知，请自信手动打卡，谢谢>_<")
