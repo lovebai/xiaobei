@@ -230,6 +230,6 @@ if __name__ == '__main__':
         else:
             print("Error：" + json.loads(respond)['msg'])
             if EMAIL != 'yes':
-                send_mail("抱歉打卡失败了，原因未知，请自信手动打卡，谢谢>_<")
+                send_mail("抱歉打卡失败了，原因未知，请自行手动打卡，谢谢>_<")
             if WX_APP != '':
-                wxapp_notify("抱歉打卡失败了，原因未知，请自信手动打卡，谢谢>_<")
+                wxapp_notify("抱歉打卡失败了，原因未知，请自行手动打卡，谢谢>_<")
