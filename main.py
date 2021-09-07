@@ -124,7 +124,7 @@ def wxapp_notify(content):
     }
     response = requests.post(url=url, headers=headers, data=json.dumps(payload), timeout=15).json()
     accesstoken = response["access_token"]
-    html = content + "<br/>打卡时间：" + time.strftime("%Y-%m-%d  %H:%M:%S")
+    html = content + "<br/>打卡日期：" + time.strftime("%Y-%m-%d")
     options = {
         'msgtype': 'mpnews',
         'mpnews': {
@@ -207,12 +207,12 @@ if __name__ == '__main__':
         # 获取位置
         if COORD is None or COORD == '':
             COORD = get_location()
-            print(COORD)
         else:
             pass
 
         health_param = None
 
+        print(COORD)
         if LOCATION is not None and COORD is not None:
             health_param = get_param(COORD)
         else:
