@@ -205,12 +205,11 @@ if __name__ == '__main__':
         HEADERS['authorization'] = json.loads(res)['token']
 
         # 获取位置
-        if COORD is None:
+        if COORD is None or COORD == '':
             COORD = get_location()
+            print(COORD)
         else:
             pass
-
-        print(COORD)
 
         health_param = None
 
