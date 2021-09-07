@@ -125,6 +125,7 @@ def wxapp_notify(content):
     response = requests.post(url=url, headers=headers, data=json.dumps(payload), timeout=15).json()
     accesstoken = response["access_token"]
     html = content + "<br/>打卡位置：" + COORD + "<br/>打卡日期：" + time.strftime("%Y-%m-%d")
+    content = content + "打卡位置:" + COORD + "打卡日期：" + time.strftime("%Y-%m-%d")
     options = {
         'msgtype': 'mpnews',
         'mpnews': {
@@ -135,7 +136,7 @@ def wxapp_notify(content):
                     'author': '小白',
                     'content_source_url': '',
                     'content': f'{html}',
-                    'digest': f'{html}'
+                    'digest': f'{content}'
                 }
             ]
         }
