@@ -124,8 +124,8 @@ def wxapp_notify(content):
     }
     response = requests.post(url=url, headers=headers, data=json.dumps(payload), timeout=15).json()
     accesstoken = response["access_token"]
-    html = content + "<br/>打卡位置：" + COORD + "<br/>打卡日期：" + time.strftime("%Y-%m-%d")
-    content = content + "打卡位置:" + COORD + "打卡日期：" + time.strftime("%Y-%m-%d")
+    content = "打卡情况：[" + content + "]\n打卡位置：[" + COORD + "]\n打卡日期：[" + time.strftime("%Y-%m-%d") + "]"
+    html = content.replace("\n", "<br/>")
     options = {
         'msgtype': 'mpnews',
         'mpnews': {
@@ -224,14 +224,14 @@ if __name__ == '__main__':
         # succeed return {'msg': '操作成功', 'code': 200}
         status = json.loads(respond)['code']
         if status == 200:
-            print("恭喜您打卡成功了！")
+            print("恭喜您打卡成功啦！")
             if EMAIL != '':
-                send_mail("恭喜您今天打卡成功啦^_^")
+                send_mail("打卡成功啦🎉")
             if WX_APP != '':
-                wxapp_notify("恭喜您今天打卡成功啦^_^")
+                wxapp_notify("打卡成功啦🎉")
         else:
             print("Error：" + json.loads(respond)['msg'])
             if EMAIL != 'yes':
-                send_mail("抱歉打卡失败了，原因未知，请自行手动打卡，谢谢>_<")
+                send_mail("🙁抱歉打卡失败了，原因未知，请自行手动打卡，谢谢")
             if WX_APP != '':
-                wxapp_notify("抱歉打卡失败了，原因未知，请自行手动打卡，谢谢>_<")
+                wxapp_notify("🙁抱歉打卡失败了，原因未知，请自行手动打卡，谢谢")
