@@ -18,9 +18,9 @@ COORD = os.getenv("XB_COORD")
 EMAIL = os.getenv("XB_EMAIL")
 # 企业微信应用
 WX_APP = os.getenv("XB_WXAPP")
-
 # 基本链接
-BASE_URL = "https://xiaobei.yinghuaonline.com/prod-api/"
+BASE_URL = "https://xiaobei.yinghuaonline.com/xiaobei-api/"
+
 # header
 HEADERS = {
     "user-agent": "iPhone10,3(iOS/14.4) Uninview(Uninview/1.0.0) Weex/0.26.0 1125x2436",
@@ -164,6 +164,8 @@ if __name__ == '__main__':
     # Url
     # 滑动验证
     captcha = BASE_URL + 'captchaImage'
+    # captcha = 'https://xiaobei.yinghuaonline.com/xiaobei-api/captchaImage'
+    # https://xiaobei.yinghuaonline.com/xiaobei-api/captchaImage
     # 登录
     login = BASE_URL + 'login'
     # 打卡
