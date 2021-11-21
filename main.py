@@ -112,6 +112,11 @@ def send_mail(context):
         print("通知发送失败，原因：" + json.loads(result)['msg'])
 
 
+# 一言
+def yiyan():
+    return requests.get("https://api.xiaobaibk.com/api/yiyan.php").text
+
+
 def wxapp_notify(content):
     app_params = WX_APP.split(',')
     url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken'
@@ -124,7 +129,7 @@ def wxapp_notify(content):
     }
     response = requests.post(url=url, headers=headers, data=json.dumps(payload), timeout=15).json()
     accesstoken = response["access_token"]
-    content = "打卡情况：[" + content + "]\n打卡位置：[" + COORD + "]\n打卡日期：[" + time.strftime("%Y-%m-%d") + "]"
+    content = "打卡情况：[" + content + "]\n打卡位置：[" + COORD + "]\n打卡日期：[" + time.strftime("%Y-%m-%d") + "]\n["+yiyan()+"]"
     html = content.replace("\n", "<br/>")
     options = {
         'msgtype': 'mpnews',
