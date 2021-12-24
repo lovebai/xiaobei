@@ -143,6 +143,7 @@ def wxapp_notify(content,title='小北成功打卡通知'):
         response = requests.post(url=url, headers=headers, data=json.dumps(payload), timeout=15).json()
     except:
         print("微信通知发送不成功！")
+        os._exit(0)
     accesstoken = response["access_token"]
     content = "打卡情况：[" + content + "]\n打卡位置：[" + COORD + "]\n打卡日期：[" + time.strftime("%Y-%m-%d") + "]\n随言：["+yiyan()+"]"
     html = content.replace("\n", "<br/>")
@@ -198,6 +199,7 @@ if __name__ == '__main__':
     except:
         print("获取验证码出现错误！")
         wxapp_notify('😂估计小北服务器崩了或者在升级中，稍后运行脚本或者自行在软件打卡', '小北打卡失败')
+        os._exit(0)
     # 取得uuid及showCode
     uuid = json.loads(response)['uuid']
     showCode = json.loads(response)['showCode']
@@ -217,6 +219,8 @@ if __name__ == '__main__':
     except:
         print("用户登录不成功！")
         wxapp_notify('😂估计小北服务器崩了或者在升级中，稍后运行脚本或者自行在软件打卡', '小北打卡失败')
+        os._exit(0)
+
     code = json.loads(res)['code']
     msg = json.loads(res)['msg']
 
@@ -254,6 +258,7 @@ if __name__ == '__main__':
         except:
             print("打卡失败！")
             wxapp_notify('😩可以正常登录但是遇到异常，原因不明，请自行打卡', '小北打卡失败')
+            os._exit(0)
         # error return {'msg': None, 'code': 500}
         # succeed return {'msg': '操作成功', 'code': 200}
         status = json.loads(respond)['code']
