@@ -47,6 +47,14 @@ def is_open():
     else:
         print("请在浏览器里打开链接获取经纬度：https://api.xiaobaibk.com/api/map/")
 
+if EMAIL is None:
+    EMAIL = ''
+
+if SENDKEY is None:
+    SENDKEY =''
+
+if WX_APP is None:
+    WX_APP = ''
 
 # 判断环境变量里是否为空
 if USERNAME is None or PASSWORD is None:
@@ -251,6 +259,7 @@ if __name__ == '__main__':
 
     if code != 200:
         print("Sorry! Login failed! Error：" + msg)
+
         # 发送邮件
         if EMAIL != '':
             send_mail("登录失败，失败原因：" + msg)
@@ -308,6 +317,8 @@ if __name__ == '__main__':
             print("Error：" + json.loads(respond)['msg'])
             if EMAIL != '':
                 send_mail("🙁抱歉打卡失败了，原因未知，请自行手动打卡，谢谢")
+
+            print(SENDKEY)
 
             # server酱
             if SENDKEY != '':
