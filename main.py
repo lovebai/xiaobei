@@ -253,7 +253,18 @@ if __name__ == '__main__':
 
         # 获取位置
         if COORD is None or COORD == '':
-            COORD = get_location()
+            try:
+                COORD = get_location()
+            except:
+
+                print("位置信息获取失败！")
+                err = '😩可以正常登录但是位置信息获取失败，所以打卡失败了'
+                if SENDKEY != '':
+                    sc_send(err)
+                if WX_APP != '':
+                    wxapp_notify(err, '小北打卡失败')
+                os._exit(0)
+
         else:
             pass
 
@@ -269,7 +280,10 @@ if __name__ == '__main__':
             respond = requests.post(url=health, headers=HEADERS, json=health_param).text
         except:
             print("打卡失败！")
-            wxapp_notify('😩可以正常登录但是遇到异常，原因不明，请自行打卡', '小北打卡失败')
+            if SENDKEY != '':
+                sc_send("打卡失败！")
+            if WX_APP != '':
+                wxapp_notify('😩可以正常登录但是遇到异常，原因不明，请自行打卡', '小北打卡失败')
             os._exit(0)
         # error return {'msg': None, 'code': 500}
         # succeed return {'msg': '操作成功', 'code': 200}
