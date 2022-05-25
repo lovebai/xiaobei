@@ -5,6 +5,8 @@
 > 这是一个小北学生自动打卡脚本，用了此脚本导员再也不用在群里一直@你了，不用为了每天忘记打卡而想各种理由了，这玩意之前就想就想搞一个了，只不过没时间好好看一下，之前使用小米手机抓包一直有问题，最近用iPhone抓 却抓到了
 > 这个脚本是在我上班摸鱼期间写的，带薪摸鱼🐟  真的很舒服~~
 
+**该仓库基于[@lovabai](https://github.com/lovebai/xiaobei)的代码进行了一定的修改，支持了多用户打卡功能**
+
 ### 使用
 
 ---
@@ -30,30 +32,28 @@
 
 ---
 
-
 #### 在Github Actions运行方式（推荐使用这种）
 
 ---
-
 
 ##### 首先点击右上角的Fork
 
 ![Fork](image/162619.png)
 
-
 ##### Fork成功后点击 `settings`
+
 ![setting](image/163023.png)
 
-
 ##### 为了安全，选择和下图一样的,右侧栏 `actions`
+
 ![setting](image/163327.png)
 
-
 ##### 还是右侧栏，选择 `secrets`
+
 ![secrets](image/163720.png)
 
-
 ##### 根据下图 添加配置
+
 ![secrets](image/164043.png)
 
 为了方便复制也提供一份文本的
@@ -67,7 +67,6 @@ XB_EMAIL  # 可选
 XB_WXAPP # 可选
 XB_SENDKEY #可选
 ```
-
 
 参数介绍
 
@@ -90,13 +89,16 @@ XB_SENDKEY #可选
 ![]()
 
 ##### 完成之后点 `code`回到代码页然后点add file在点击create new file
+
 ![secrets](image/170240.png)
 ![add file](image/170636.png)
 
 ##### 点击后标题和内容随便输入，输好之后直接点击Commit new file
+
 ![secrets](image/170957.png)
 
 ##### 之后在前actions查看任务即可
+
 ![secrets](image/170509.png)
 ![具体信息可以的点击查看](image/171549.png)
 
@@ -116,7 +118,6 @@ XB_SENDKEY #可选
 - 如果有需要server酱的可自行二开，加个函数就完事了，由于需要关注公众号我就不搞了，提供个链接：[https://sct.ftqq.com/](https://sct.ftqq.com/ "https://sct.ftqq.com/") 当然还有QQ的，我本人不怎么用QQ所以也没考虑🤣，提供个链接：[https://qmsg.zendee.cn/](https://qmsg.zendee.cn/ "https://qmsg.zendee.cn/")（免费）
   如果微信绑定了邮箱，用邮箱也是挺方便的![](image/1628403053436.png)
 
-
 ---
 
 ### 新版介绍
@@ -134,7 +135,6 @@ XB_SENDKEY #可选
 
 整体改了点，重复造轮子，从之前每天打卡一次设置成了一天两次，以防小北打卡系统出现问题，嗯 就这样
 
-
 ### 其他
 
 ---
@@ -147,5 +147,3 @@ XB_SENDKEY #可选
 ---
 
 本项目只做为技术研究，本人不对其程序所带来的后果担则。
-
-
